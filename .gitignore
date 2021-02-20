@@ -1,1 +1,14 @@
-*.c
+*
+!*/
+!*.*
+node_m.odules/
+.DS_Store
+.idea/
+*.iml
+*.pem
+*.zip
+# Package Files #
+*.jar
+*.war
+*.ear
+*.txt
