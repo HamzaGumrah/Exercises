@@ -1,7 +1,13 @@
 //#include<iostream.h>
-#include<stdio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <time.h>
+#define ARRAY_SIZE 1000000
+#define REINIT_CYCLES 100
+#define INT_SIZE sizeof(int)
 //using namespace std;
-int A[5];//bss in memory not initialized
+int A[5]; //bss in memory not initialized
 /*
 memory sections
 Heap  pointers mallocs reallocs
@@ -14,16 +20,75 @@ and code section.
 */
 int main()
 {
-  int B[2]={1,2};//go to code section in memory,4 bytes for each
-  //integer is 4 bytes in modern compilers
-  //initialized so in  data segment
-  printf("\nHello World\n\n");
-  for(int i=0;i<2;i++)
-    printf("%d\n",B[i]);
-  A[1] = 5;
-  printf("%d\n",sizeof(A));
-  //cout<<sizeof(A)<<endl;
-  //cout<<A[1];
+  unsigned long indexedTime, arithmaticTime;
+  double ratio = 0;
+  srand(time(0));
+
+  struct timeval stop, start;
+  int cycle = 0;
+  int *pointerTest = (int *)malloc(sizeof(INT_SIZE) * ARRAY_SIZE);
+  for (int i = 0; i < ARRAY_SIZE; i++)
+  {
+    *(pointerTest++) = i;
+    // printf("[%d] = %d\n", i,*(pointerTest-1));
+  }
+  pointerTest = pointerTest - ARRAY_SIZE;
+
+  // printf("End Address of pointer = %u\n", pointerTest);
+  // pointerTest = pointerTest - ARRAY_SIZE;
+  printf("\nStart Address of pointer = %u\n", pointerTest);
+  printf("Re-initialize with ordered numbers  of ARRAY with SIZE %d Pointer Aritmatic\n", ARRAY_SIZE);
+  printf("Init Cycles = %d\n", REINIT_CYCLES);
+  gettimeofday(&start, NULL);
+  while (cycle < REINIT_CYCLES)
+  {
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+      *(pointerTest++) = i % 50;
+      // printf("[%d] = %d\n", i,*(pointerTest-1));
+    }
+    cycle++;
+    pointerTest = pointerTest - ARRAY_SIZE;
+  }
+  gettimeofday(&stop, NULL);
+  arithmaticTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+  printf("RE-INIT took %d , %lu us\n", REINIT_CYCLES, arithmaticTime);
+
+  printf("Start Address of pointer = %u\n", pointerTest);
+
+  printf("\nRe - initialize with ordered numbers of ARRAY with SIZE %d [i] addressing\n", ARRAY_SIZE);
+  printf("Init Cycles = %d\n", REINIT_CYCLES);
+  cycle = 0;
+  gettimeofday(&start, NULL);
+  while (cycle < REINIT_CYCLES)
+  {
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+      pointerTest[i] = i % 50;
+    }
+    cycle++;
+  }
+  gettimeofday(&stop, NULL);
+  indexedTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
+  printf("RE-INIT %d times took %lu us\n", REINIT_CYCLES, indexedTime);
+
+  printf("\n<---Summary--->\n");
+  if (indexedTime > arithmaticTime)
+  {
+    printf("Pointer Arithmatic is %lu Faster than index addressing \n", indexedTime - arithmaticTime);
+    ratio = (double)indexedTime / arithmaticTime;
+    printf("%f Times faster ", ratio);
+  }
+  else
+  {
+    printf("Index Addressing is %lu Faster than pointer arithmatic ", arithmaticTime - indexedTime);
+    ratio = (double)arithmaticTime / indexedTime;
+    printf("%f Times faster ", ratio);
+  }
+  printf("\nTesting random index value check \n");
+  int index = rand() % 1000000;
+  printf("Value at [%d] = %d \n", index, pointerTest[index]);
+  printf("Value at *(p+%d) = %d \n", index, *(pointerTest + index));
 
   return 0;
 }

@@ -14,7 +14,7 @@ and code section.
 */
 int main()
 {
-  int B[2]={1,2};//go to code section in memory,4 bytes for each
+  //int B[2]={1,2};//go to code section in memory,4 bytes for each
   //integer is 4 bytes in modern compilers
   //initialized so in  data segment
   // printf("\nHello World\n\n");
@@ -27,13 +27,18 @@ int main()
   int n;
   std::cout << "Enter Size" << '\n';
   std::cin >> n;
-  int C[n];
-  C[0]=2;
+ 
   for(int x:A){
     std::cout << x << '\n';
   }
   cout<<sizeof(A)<<endl;
   cout<<A[1];
-
+  //2D Arrays
+  int B[3][4] = {{1, 2, 3, 4}, {2, 4, 6, 8}, {5, 10, 15, 20}};//all in stack
+  int *C[3]; //2D array
+  C[0] = new int[4];
+  int **D; //2D array
+  D = new int*[3];
+  D[0] = new int[4];
   return 0;
 }
