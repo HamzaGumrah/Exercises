@@ -24,7 +24,7 @@ int main()
   double ratio = 0;
   srand(time(0));
 
-  struct timeval stop, start;
+  struct timeval stop, start,start2,stop2;
   int cycle = 0;
   int *pointerTest = (int *)malloc(sizeof(INT_SIZE) * ARRAY_SIZE);
   for (int i = 0; i < ARRAY_SIZE; i++)
@@ -33,27 +33,6 @@ int main()
     // printf("[%d] = %d\n", i,*(pointerTest-1));
   }
   pointerTest = pointerTest - ARRAY_SIZE;
-
-  // printf("End Address of pointer = %u\n", pointerTest);
-  // pointerTest = pointerTest - ARRAY_SIZE;
-  printf("\nStart Address of pointer = %u\n", pointerTest);
-  printf("Re-initialize with ordered numbers  of ARRAY with SIZE %d Pointer Aritmatic\n", ARRAY_SIZE);
-  printf("Init Cycles = %d\n", REINIT_CYCLES);
-  gettimeofday(&start, NULL);
-  while (cycle < REINIT_CYCLES)
-  {
-    for (int i = 0; i < ARRAY_SIZE; i++)
-    {
-      *(pointerTest++) = i % 50;
-      // printf("[%d] = %d\n", i,*(pointerTest-1));
-    }
-    cycle++;
-    pointerTest = pointerTest - ARRAY_SIZE;
-  }
-  gettimeofday(&stop, NULL);
-  arithmaticTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
-  printf("RE-INIT took %d , %lu us\n", REINIT_CYCLES, arithmaticTime);
-
   printf("Start Address of pointer = %u\n", pointerTest);
 
   printf("\nRe - initialize with ordered numbers of ARRAY with SIZE %d [i] addressing\n", ARRAY_SIZE);
@@ -72,6 +51,28 @@ int main()
   indexedTime = (stop.tv_sec - start.tv_sec) * 1000000 + stop.tv_usec - start.tv_usec;
   printf("RE-INIT %d times took %lu us\n", REINIT_CYCLES, indexedTime);
 
+  // printf("End Address of pointer = %u\n", pointerTest);
+  // pointerTest = pointerTest - ARRAY_SIZE;
+  printf("\nStart Address of pointer = %u\n", pointerTest);
+  printf("Re-initialize with ordered numbers  of ARRAY with SIZE %d Pointer Aritmatic\n", ARRAY_SIZE);
+  printf("Init Cycles = %d\n", REINIT_CYCLES);
+  gettimeofday(&start2, NULL);
+  cycle = 0;
+  while (cycle < REINIT_CYCLES)
+  {
+    for (int i = 0; i < ARRAY_SIZE; i++)
+    {
+      *(pointerTest++) = i % 50;
+      // printf("[%d] = %d\n", i,*(pointerTest-1));
+    }
+    cycle++;
+    pointerTest = pointerTest - ARRAY_SIZE;
+  }
+  gettimeofday(&stop2, NULL);
+  arithmaticTime = (stop2.tv_sec - start2.tv_sec) * 1000000 + stop2.tv_usec - start2.tv_usec;
+  printf("RE-INIT took %d , %lu us\n", REINIT_CYCLES, arithmaticTime);
+
+ 
   printf("\n<---Summary--->\n");
   if (indexedTime > arithmaticTime)
   {
