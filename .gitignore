@@ -4,6 +4,7 @@
 node_m.odules/
 .DS_Store
 .idea/
+.vscode/
 *.iml
 *.pem
 *.zip
