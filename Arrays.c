@@ -58,13 +58,12 @@ int main()
   printf("Init Cycles = %d\n", REINIT_CYCLES);
   gettimeofday(&start2, NULL);
   cycle = 0;
+  int *endAdress = pointerTest + ARRAY_SIZE;
   while (cycle < REINIT_CYCLES)
   {
-    for (int i = 0; i < ARRAY_SIZE; i++)
-    {
-      *(pointerTest++) = i % 50;
-      // printf("[%d] = %d\n", i,*(pointerTest-1));
-    }
+    do{
+      *(pointerTest++) = cycle % 50;
+    } while (pointerTest < endAdress);
     cycle++;
     pointerTest = pointerTest - ARRAY_SIZE;
   }
@@ -90,6 +89,7 @@ int main()
   int index = rand() % 1000000;
   printf("Value at [%d] = %d \n", index, pointerTest[index]);
   printf("Value at *(p+%d) = %d \n", index, *(pointerTest + index));
-
+  free(pointerTest);
+  pointerTest = NULL;
   return 0;
 }
