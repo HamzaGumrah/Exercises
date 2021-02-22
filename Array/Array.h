@@ -1,12 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
-typedef enum
+#define EMPTY_ARRAY(self) Array self = {.type = UNKOWN,.size = 0, .length = 0}
+#define DATA_TYPE_STR(dataType) \
+    (INT == dataType ? "int" : (FLOAT == dataType ? "float" : \
+    (CHAR == dataType ? "char" :  "unknown")))
+typedef enum dataType
 {
     INT,
     FLOAT,
-    CHAR
+    CHAR,
+    UNKOWN
 } DataType;
-DataType INT_ARRAY = INT, FLOAT_ARRAY = FLOAT, CHAR_ARRAY = CHAR;
 
 typedef struct Array
 {
@@ -110,4 +114,24 @@ void destructArray(Array *self)
         break;
     }
     self->length = 0;
+}
+void appendToArray(Array *self, void* value)
+{
+    if (self->length == self->size)
+        return;
+    switch (self->type)
+    {
+    case INT:
+        self->iPtr[self->length] = *((int *)value);
+        break;
+    case FLOAT:
+        self->fPtr[self->length] = *((float *)value);
+        break;
+    case CHAR:
+        self->cPtr[self->length] = *((char *)value);
+        break;
+    default:
+        break;
+    }
+    self->length++;
 }
