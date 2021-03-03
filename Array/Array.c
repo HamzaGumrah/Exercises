@@ -166,6 +166,53 @@ void removeFromArray(Array *self, int index){
         }
     self->length--;
 }
+//move to head
+int linearSearch(Array *self,void *value)
+{
+    _setCandidate(self, value);
+    if (self->type != INT)
+        return -1;
+    for (int i = 0; i < self->length; i++)
+        switch (self->type)
+        {
+        case INT:
+            if (self->iPtr[i] == *(self->candidate.intType)){
+                if(i>0)
+                    swap(self->iPtr[i], self->iPtr[0]);
+                return 0;
+            }
+            //*((int *)value);
+        case FLOAT:
+            if (self->fPtr[i] == *(self->candidate.floatType)){
+                if (i > 0)
+                    swap(self->fPtr[i], self->fPtr[0]);
+                return 0;
+            }
+            //*((float *)value);
+            break;
+        case CHAR:
+            if (self->cPtr[i] == *(self->candidate.charType)){
+                if (i > 0)
+                    swap(self->cPtr[i], self->cPtr[0]);
+            return 0;
+            }
+            break;
+        case DOUBLE:
+            if (self->dPtr[i] == *(self->candidate.doubleType)){
+                if (i > 0)
+                    swap(self->dPtr[i], self->dPtr[0]);
+                return 0;
+            }
+        default:
+            break;
+        }
+    return -1;
+}
+
+int binarySearch(Array *self, void *value){
+    
+    return 0;
+}
 int main()
 {
     // Array arr = newArray(5, INT);
@@ -202,6 +249,19 @@ int main()
     removeFromArray(&fArr, 0);
     removeFromArray(&fArr, 8);
     removeFromArray(&fArr, -1);
+    Array iArr = newArray(5, INT);
+    for (int i = 0; i<iArr.capacity;i++)
+        appendToArray(&iArr, i);
+    int x = 2;
+    int y = 5;
+    float t = -3.3;
+    void *value = &x;
+    printf("number %d is at index %d\n",x, linearSearch(&iArr, value));
+    displayArray(&iArr);
+    swap(x, y);
+    swap(t, z);
+    printf("x= %d y = %d \n",x, y);
+    printf("t= %f z = %f \n",t, z);
     displayArray(&fArr);
     return 0;
 }

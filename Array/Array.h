@@ -1,10 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 //#define EMPTY_ARRAY(self) Array self = {.type = UNKOWN,.size = 0, .length = 0}
 #define DATA_TYPE_STR(dataType)                               \
     (INT == dataType ? "int" : (FLOAT == dataType ? "float" : \
     (CHAR == dataType ? "char" : (DOUBLE == dataType ? "double" : "unknown"))))
+//generic swap for any type using memcpy copyright https://stackoverflow.com/questions/3982348/implement-generic-swap-macro-in-c
+#define swap(x, y)                                                                    \
+    do                                                                                \
+        {                                                                             \
+            unsigned char swap_temp[sizeof(x) == sizeof(y) ? (signed)sizeof(x) : -1]; \
+            memcpy(swap_temp, &y, sizeof(x));                                         \
+            memcpy(&y, &x, sizeof(x));                                                \
+            memcpy(&x, swap_temp, sizeof(x));                                         \
+        }                                                                             \
+    while (0)
 
 #define GROWTH_RATE  1.5
 
@@ -114,4 +125,6 @@ static void _insertToArray(Array *self, int index);
 void _setArrayIndex(Array *self,int index);
 
 void removeFromArray(Array *self, int index);
-// #define setArrayIndex(index,value)
+int linearSearch(Array *self, void *value);
+/*for sorted arrays*/
+int binarySearch(Array *self, void *value);
