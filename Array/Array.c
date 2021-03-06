@@ -162,7 +162,7 @@ void removeFromArray(Array *self, int index)
     self->length--;
 }
 //move to head
-int linearSearch(Array *self, void *value)
+static int _linearSearch(Array *self, void *value)
 {
     Candidate candidate;
     candidate.voidType = value;
@@ -213,71 +213,79 @@ static int _binarySearch(Array *self, void *value)
 {
     Candidate candidate;
     candidate.voidType = value;
-    // int value = *(candidate.intType);
     int first = 0;
-    int last = self->length-1;
+    int last = self->length - 1;
     int midIndex = 0;
     do
     {
-        if(midIndex == first && midIndex == last)
-            return -1;
         midIndex = median(first, last);
         switch (self->type)
         {
         case INT:
-            printf("condition [%d],  %d == %d \n",midIndex, self->iPtr[midIndex], *(candidate.intType));
+            printf("condition [%d],  %d == %d \n", midIndex, self->iPtr[midIndex], *(candidate.intType));
             if (self->iPtr[midIndex] == *(candidate.intType))
                 return midIndex;
             else if (self->iPtr[midIndex] > *(candidate.intType))
-                last = midIndex-1;
+                last = midIndex - 1;
             else if (self->iPtr[midIndex] < *(candidate.intType))
-                first = midIndex+1;
+                first = midIndex + 1;
             break;
         case FLOAT:
             if (self->fPtr[midIndex] == *(candidate.floatType))
                 return midIndex;
             else if (self->fPtr[midIndex] > *(candidate.floatType))
-                last = midIndex-1;
+                last = midIndex - 1;
             else if (self->fPtr[midIndex] < *(candidate.floatType))
-                first = midIndex+1;
+                first = midIndex + 1;
             break;
         case CHAR:
             if (self->cPtr[midIndex] == *(candidate.charType))
                 return midIndex;
-            else if(self->cPtr[midIndex] > *(candidate.charType))
-                last = midIndex-1;
-            else if(self->cPtr[midIndex] < *(candidate.charType))
-                first = midIndex+1;
+            else if (self->cPtr[midIndex] > *(candidate.charType))
+                last = midIndex - 1;
+            else if (self->cPtr[midIndex] < *(candidate.charType))
+                first = midIndex + 1;
             break;
         case DOUBLE:
             if (self->dPtr[midIndex] == *(candidate.doubleType))
                 return midIndex;
-            else if(self->dPtr[midIndex] > *(candidate.doubleType))
-                last = midIndex-1;
-            else if(self->dPtr[midIndex] < *(candidate.doubleType))
-                first = midIndex+1;
+            else if (self->dPtr[midIndex] > *(candidate.doubleType))
+                last = midIndex - 1;
+            else if (self->dPtr[midIndex] < *(candidate.doubleType))
+                first = midIndex + 1;
             break;
         default:
             return -1;
         }
 
-    } while (first<=last);
+    } while (first <= last);
     return -1;
 }
 
 int main()
 {
 
-
     Array iArr = newArray(10, INT);
+    Array fArr = newArray(10, FLOAT);
     for (int i = 0; i < iArr.capacity; i++)
         appendToArray(&iArr, i);
+    for (int i = 0; i < fArr.capacity; i++)
+    {
+        float j = (float)i + 0.5;
+        appendToArray(&fArr, j);
+    }
     displayArray(&iArr);
-    int x = 5;
+    int x = 9;
     int y = 5;
-    float t = -3.3;
+    float t = 3.5;
+
     printf("number %d is at index %d\n", x, binarySearch(&iArr, x));
+    printf("number %f is at index %d\n", t, binarySearch(&fArr, t));
+    int result = Get(&iArr, 4);
+    float resultf = Get(&fArr, 3);
+    printf("value at index 4 is %d\n", result);
+    printf("value at index 3 is %f\n", resultf);
     destructArray(&iArr);
-     printf("number %d",iArr.iPtr[3]);
+    destructArray(&fArr);
     return 0;
 }

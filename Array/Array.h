@@ -128,8 +128,50 @@ void _setArrayIndex(Array *self,int index,void* value);
 
 void removeFromArray(Array *self, int index);
 
-int linearSearch(Array *self, void *value);
+#define linearSearch(self, value) _linearSearch(self, &value)
+static int _linearSearch(Array *self, void *value);
+
 /*for sorted arrays*/
 #define binarySearch(self, value) _binarySearch(self, &value)
-
 static int _binarySearch(Array *self, void *value);
+
+#define Get(self, index)\
+    ((self)->length > index ?                       \
+    ((self)->type == INT ? (self)->iPtr[index] : \
+    ((self)->type == FLOAT ? (self)->fPtr[index]:\
+    ((self)->type == CHAR ? (self)->cPtr[index]:\
+    ((self)->type == DOUBLE ? (self)->dPtr[index]: 0\
+    )))):0)
+
+static void* _get(Array *self,int index){
+    if(index>self->length)
+        return NULL;
+    switch (self->type)
+    {
+    case INT:
+        return &(self->iPtr[index]);
+    case FLOAT:
+        return &(self->fPtr[index]);
+    case CHAR:
+        return &(self->cPtr[index]);
+    case DOUBLE:
+        return &(self->dPtr[index]);
+    default:
+        break;
+    }
+}
+
+/* #define my_function(x, y) ({             
+    int __err = 0;                       \
+    do                                   \
+    {                                    \
+        __err = function(x, y);          \
+        switch (__err)                   \
+        {                                \
+        case ERROR:                      \
+            fprintf(stderr, "Error!\n"); \
+            break;                       \
+        }                                \
+    } while (0);                         \
+    __err;                               \
+}) */
