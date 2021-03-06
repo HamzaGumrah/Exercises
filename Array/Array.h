@@ -17,6 +17,8 @@
         }                                                                             \
     while (0)
 
+#define median(x, y) (x + y) / 2;
+
 #define GROWTH_RATE  1.5
 
 typedef enum t_dataType
@@ -39,7 +41,7 @@ typedef union _candidate{
 typedef struct _Array
 {
     DataType type;
-    Candidate candidate;
+    // Candidate candidate;
     union
     {
         int *iPtr;
@@ -113,18 +115,21 @@ void displayArray(Array *self);
 
 void destructArray(Array *self);
 
-#define appendToArray(self, value) ( {_setCandidate(self,&value); _appendToArray(self); });
-static void _appendToArray(Array *self);
-static void _setCandidate(Array *self, void *value)
-{
-    self->candidate.voidType = value;
-}
+#define appendToArray(self, value) ( {_appendToArray(self,&value); });
+static void _appendToArray(Array *self, void *value);
+// static void _setcandidate(array *self, void *value)
+// {
+//     self->candidate.voidtype = value;
+// }
 
-#define insertToArray(self, index, value) ({_setCandidate(self,&value); _insertToArray(self,index); });
-static void _insertToArray(Array *self, int index);
-void _setArrayIndex(Array *self,int index);
+#define insertToArray(self, index, value) ({ _insertToArray(self, index, &value); });
+static void _insertToArray(Array *self, int index,void* value);
+void _setArrayIndex(Array *self,int index,void* value);
 
 void removeFromArray(Array *self, int index);
+
 int linearSearch(Array *self, void *value);
 /*for sorted arrays*/
-int binarySearch(Array *self, void *value);
+#define binarySearch(self, value) _binarySearch(self, &value)
+
+static int _binarySearch(Array *self, void *value);
