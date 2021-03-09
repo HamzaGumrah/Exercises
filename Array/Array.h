@@ -18,6 +18,15 @@
     while (0)
 
 #define median(x, y) (x + y) / 2;
+#define max(a, b) \
+    ({ __auto_type _a = (a); \
+           __auto_type _b = (b); \
+         _a >= _b ? _a : _b; })
+
+#define min(a, b) \
+    ({ __auto_type _a = (a); \
+           __auto_type _b = (b); \
+         _a <= _b ? _a : _b; })
 
 #define GROWTH_RATE  1.5
 
@@ -41,7 +50,6 @@ typedef union _candidate{
 typedef struct _Array
 {
     DataType type;
-    // Candidate candidate;
     union
     {
         int *iPtr;
@@ -135,7 +143,7 @@ static int _linearSearch(Array *self, void *value);
 #define binarySearch(self, value) _binarySearch(self, &value)
 static int _binarySearch(Array *self, void *value);
 
-#define Get(self, index)\
+#define get(self, index)\
     ((self)->length > index ?                       \
     ((self)->type == INT ? (self)->iPtr[index] : \
     ((self)->type == FLOAT ? (self)->fPtr[index]:\
@@ -143,35 +151,28 @@ static int _binarySearch(Array *self, void *value);
     ((self)->type == DOUBLE ? (self)->dPtr[index]: 0\
     )))):0)
 
-static void* _get(Array *self,int index){
-    if(index>self->length)
-        return NULL;
-    switch (self->type)
-    {
-    case INT:
-        return &(self->iPtr[index]);
-    case FLOAT:
-        return &(self->fPtr[index]);
-    case CHAR:
-        return &(self->cPtr[index]);
-    case DOUBLE:
-        return &(self->dPtr[index]);
-    default:
-        break;
-    }
-}
+#define set(self, index, value)                                                   \
+    do                                                                            \
+    {                                                                             \
+        if((self)->length>index){                                                 \
+            switch ((self)->type)                                                 \
+            {                                           \
+            case INT:                                   \
+                (self)->iPtr[index] = value;            \
+                break;                                  \
+            case FLOAT:                                  \
+                (self)->fPtr[index] = value;            \
+                break;                                     \
+            case CHAR:                                    \
+                (self)->cPtr[index] = value;\
+                break;\
+            case DOUBLE:\
+                (self)->dPtr[index] = value;\
+                break;\
+            default:\
+                break;\
+            }\
+        } \
+    } while (0)
 
-/* #define my_function(x, y) ({             
-    int __err = 0;                       \
-    do                                   \
-    {                                    \
-        __err = function(x, y);          \
-        switch (__err)                   \
-        {                                \
-        case ERROR:                      \
-            fprintf(stderr, "Error!\n"); \
-            break;                       \
-        }                                \
-    } while (0);                         \
-    __err;                               \
-}) */
+void reverse(Array *self);

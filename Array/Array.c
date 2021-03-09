@@ -262,6 +262,30 @@ static int _binarySearch(Array *self, void *value)
     return -1;
 }
 
+void reverse(Array *self){
+    if(self->length<2)
+        return;
+    switch (self->type)
+    {
+    case INT:
+        for (int i = 0,j=self->length-1; i < self->length/2;i++,j--)
+            swap(self->iPtr[i], self->iPtr[j]);
+        break;
+        case FLOAT:
+            for (int i = 0, j = self->length - 1; i < self->length / 2; i++, j--)
+                swap(self->fPtr[i], self->fPtr[j]);
+            break;
+        case CHAR:
+            for (int i = 0, j = self->length - 1; i < self->length / 2; i++, j--)
+                swap(self->cPtr[i], self->cPtr[j]);
+            break;
+        case DOUBLE:
+            for (int i = 0, j = self->length - 1; i < self->length / 2; i++, j--)
+                swap(self->dPtr[i], self->dPtr[j]);
+            break;
+        }
+}
+
 int main()
 {
 
@@ -281,10 +305,14 @@ int main()
 
     printf("number %d is at index %d\n", x, binarySearch(&iArr, x));
     printf("number %f is at index %d\n", t, binarySearch(&fArr, t));
-    int result = Get(&iArr, 4);
-    float resultf = Get(&fArr, 3);
+    int result = get(&iArr, 4);
+    float resultf = get(&fArr, 3);
     printf("value at index 4 is %d\n", result);
     printf("value at index 3 is %f\n", resultf);
+    set(&iArr, 8, 20);
+    result = min(2,2);
+    printf("value at index 8 is %d\n",result);
+    // reverse(&iArr);
     destructArray(&iArr);
     destructArray(&fArr);
     return 0;
