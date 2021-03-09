@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+/*
+Refreshment exercise to use unions and structs , trying to create a more generic like, array for 
+common primitive types. A more heavy macro approach can be used with the help of __typeof__ ,Yet this is just an exercise 
+*/
 //#define EMPTY_ARRAY(self) Array self = {.type = UNKOWN,.size = 0, .length = 0}
 #define DATA_TYPE_STR(dataType)                               \
     (INT == dataType ? "int" : (FLOAT == dataType ? "float" : \
