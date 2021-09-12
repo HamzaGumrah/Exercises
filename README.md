@@ -1,2 +1,2 @@
 # Exercises
-Sample codes to warm up after 10 years :)
+Sample codes to warm up after 10 years
